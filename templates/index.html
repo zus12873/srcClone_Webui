@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Comparison</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+</head>
+<body>
+    <h1>Upload Code Files</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file1" id="file1" accept=".java"><br>
+        <pre><code id="file1Content" class="java"></code></pre><br>
+        <input type="file" name="file2" id="file2" accept=".java"><br>
+        <pre><code id="file2Content" class="java"></code></pre><br>
+        <button type="button" id="submitButton">Submit</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>
+        document.getElementById('file1').addEventListener('change', function() {
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('file1Content').textContent = reader.result;
+                hljs.highlightElement(document.getElementById('file1Content'));
+            }
+            reader.readAsText(file);
+        });
+
+        document.getElementById('file2').addEventListener('change', function() {
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('file2Content').textContent = reader.result;
+                hljs.highlightElement(document.getElementById('file2Content'));
+            }
+            reader.readAsText(file);
+        });
+
+document.getElementById('submitButton').addEventListener('click', function() {
+    var formData = new FormData(document.getElementById('uploadForm'));
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            var output = data.output.split('\n');
+            var resultHtml = '';
+
+            // 添加文本相似度
+            
+
+            // 添加文件的切片矩阵值
+            
+            // output.forEach(function(line) {
+            //     if (line.trim() !== '') {
+            //         resultHtml += line + '<br>';
+            //     }
+            // });
+            resultHtml += '文件的切片矩阵值:<br>';
+            resultHtml+=output[0]+'<br>';
+            resultHtml+=output[1]+'<br>';
+
+            resultHtml += '相似度:'+output[2] +'<br>';
+            // resultHtml+=output[2]+'<br>';
+            document.getElementById('result').innerHTML = resultHtml;
+            console.log(output)
+        }
+    };
+    xhr.send(formData);
+});
+
+        hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>

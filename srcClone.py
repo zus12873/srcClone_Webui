@@ -11,7 +11,7 @@ def src2sps(file):
     re = None
     cmd = "srcml --position {0} -o {0}.xml".format(file)
     with os.popen(cmd) as c1:
-        cmd2 = "srcslice {0}.xml".format(file)
+        cmd2 = "./srcslice {0}.xml".format(file)
         with os.popen(cmd2) as c2:
             result = c2.read()
             # print(result)
